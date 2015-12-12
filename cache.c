@@ -32,25 +32,37 @@ char WP_STR[2][20] = {
 //
 // Utils
 //
-bool is_power_of_2(uint32 x) {
-  return (x != 0) && !(x & (x-1));
+static bool is_power_of_2(uint32 x) { return (x != 0) && !(x & (x-1)); }
+
+// msg 를 출력하고, exit(1);
+static void panic(const char *msg) {
+  fputs(msg, stderr);
+  fputc('\n', stderr);
+  exit(EXIT_FAILURE);
+}
+
+// Assertion
+static void check(bool cond, const char *msg) {
+  if (!cond) { panic(msg); }
 }
 
 
-
+//
+// Implementation
+//
 Cache* create_cache(uint32 capacity, uint32 blocksize, uint32 ways,
                     uint32 rp, uint32 wp, uint32 verbosity)
 {
-  // TODO
-  //
   // 1. check cache parameters
-  //    - capacity, blocksize, and ways must be powers of 2
-  //    - capacity must be > blocksize
-  //    - number of ways must be >= the number of blocks
+  check(is_power_of_2(capacity), "Capacity is not power of 2");
+  check(is_power_of_2(blocksize), "Blocksize is not power of 2");
+  check(is_power_of_2(ways), "Number of ways is not power of 2");
+  check(capacity > blocksize, "Capacity should be > blocksize");
+  check(ways >= blocksize, "Number of ways must be >= the number of blocks");
+
+  // TODO
   // 2. allocate cache and initialize them
   //    - use the above data structures Cache, Set, and Line
-  // 3. print cache configuration
-  // 4. return cache
 
 
   // 3. print cache configuration
@@ -63,7 +75,7 @@ Cache* create_cache(uint32 capacity, uint32 blocksize, uint32 ways,
          "  replacement:     %s\n"
          "  on write miss:   %s\n"
          "\n",
-         0, 0, 0, 0, 0, "", ""); // TODO
+         capacity, blocksize, ways, 0, 0, "", ""); // TODO
 
   // 4. return cache
   return NULL;
