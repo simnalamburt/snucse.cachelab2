@@ -15,6 +15,7 @@
 #include <limits.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <stdbool.h>
 #include "cache.h"
 
 char RP_STR[RP_MAX+1][32] = {
@@ -26,6 +27,15 @@ char RP_STR[RP_MAX+1][32] = {
 char WP_STR[2][20] = {
   "write-allocate", "no write-allocate"
 };
+
+
+//
+// Utils
+//
+bool is_power_of_2(uint32 x) {
+  return (x != 0) && !(x & (x-1));
+}
+
 
 
 Cache* create_cache(uint32 capacity, uint32 blocksize, uint32 ways,

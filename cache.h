@@ -14,9 +14,6 @@
 #ifndef __CACHE_H__
 #define __CACHE_H__
 
-// ISPOW2: returns 1 if x is a power of 2, 0 otherwise
-#define ISPOW2(x) ((x != 0) && !(x & (x-1)))
-
 // access types
 #define READ                  0       // read access
 #define WRITE                 1       // write access
