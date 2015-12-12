@@ -1,0 +1,17 @@
+#!/usr/bin/env ruby
+require 'diffy'
+
+Diffy::Diff.default_format = :color
+
+class String
+def red;            "\e[31m#{self}\e[0m" end
+def green;          "\e[32m#{self}\e[0m" end
+end
+
+expected = `./cachesim-ref -c 256 -b 16 -w 1 -r 2 < traces/test.2.trace 2>/dev/null`
+actual   = `./cachesim     -c 256 -b 16 -w 1 -r 2 < traces/test.2.trace 2>/dev/null`
+
+puts '-Expected'.red
+puts '+Actual'.green
+puts
+puts Diffy::Diff.new(expected, actual)
