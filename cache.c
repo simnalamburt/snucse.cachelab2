@@ -147,11 +147,8 @@ static uint32 set_find_victim(Cache *c, Set *s) {
 }
 
 void cache_access(Cache *cache, uint32 type, uint32 address, uint32 length) {
-  for (uint32 b = cache->blocksize; b != 1; b >>= 1) { address >>= 1; }
-  uint32 set_index = (cache->set_count - 1) & address;
-
-  for (uint32 s = cache->set_count; s != 1; s >>= 1) { address >>= 1; }
-  uint32 tag = address;
+  uint32 set_index = (address >> ilog2(cache->blocksize)) & (cache->set_count - 1);
+  uint32 tag = address >> (ilog2(cache->blocksize) + ilog2(cache->set_count));
 
   printf("\e[33mdebug\e[0m set index: %d, tag: %d\n", set_index, tag);
 
