@@ -11,6 +11,7 @@
 // 20151119   bernhard    created
 //
 
+#define _GNU_SOURCE
 #include <assert.h>
 #include <errno.h>
 #include <stdio.h>

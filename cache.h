@@ -41,33 +41,27 @@ typedef unsigned char uint8;
 typedef unsigned int uint32;
 
 // Line: one cache line
-// (hint: for the simulation you do not need to store the actual data in the
-//        cache, the tag and management information is sufficient)
 typedef struct __line {
-  // TODO
-  // if necessary add more fields
+  uint32 tag;
+  uint8 valid : 1;
 } Line;
 
 // Set: one set of the cache
 typedef struct __set {
   Line  *way;                         // cache lines
-
-  // TODO
-  // if necessary add more fields
 } Set;
 
 // Cache: the cache
 typedef struct __cache {
-  Set   *set;                         // cache sets
+  Set *sets;                         // cache sets
+  uint32 blocksize;
+  uint32 set_count;
+  uint32 way_count;
 
   uint32 s_access;                    // statistics: number of accesses
   uint32 s_hit;                       // statistics: number of hits
   uint32 s_miss;                      // statistics: number of misses
   uint32 s_evict;                     // statistics: number of evictions
-
-  // TODO
-  // if necessary add more fields
-  //
 } Cache;
 
 //
@@ -82,21 +76,6 @@ Cache* create_cache(uint32 capacity, uint32 blocksize, uint32 ways,
                     uint32 rp, uint32 wp, uint32 verbosity);
 void delete_cache(Cache *c);
 
-
-//
-// simulate access to a cache line
-//
-void line_access(Cache *c, Line *l);
-
-//
-// allocate a tag into a given cache line
-//
-void line_alloc(Cache *c, Line *l, uint32 tag);
-
-//
-// find a victim line for a given cache set
-//
-uint32 set_find_victim(Cache *c, Set *s);
 
 //
 // simulate a cache access

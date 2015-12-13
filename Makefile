@@ -1,5 +1,5 @@
 %.o: %.c
-	$(CC) -O2 -Wall -c -o $@ $<
+	$(CC) -std=gnu99 -O2 -Wall -c -o $@ $<
 
 all: cache.o cachesim.o
 	$(CC) -Wall -o cachesim $^
