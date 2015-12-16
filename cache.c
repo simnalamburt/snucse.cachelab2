@@ -83,6 +83,7 @@ Cache* create_cache(uint32 capacity, uint32 blocksize, uint32 way_count,
 
   Cache *cache = malloc(sizeof(Cache));
   cache->sets = sets;
+  cache->blocksize = blocksize;
   cache->set_count = set_count;
   cache->way_count = way_count;
 
@@ -102,7 +103,7 @@ Cache* create_cache(uint32 capacity, uint32 blocksize, uint32 way_count,
          "  on write miss:   %s\n"
          "\n",
          capacity, blocksize, way_count, set_count,
-         ilog2(way_count) + ilog2(set_count), RP_STR[rp], WP_STR[wp]);
+         ilog2(set_count) + ilog2(blocksize), RP_STR[rp], WP_STR[wp]);
 
   // 4. return cache
   return cache;
@@ -146,15 +147,17 @@ static uint32 set_find_victim(Cache *c, Set *s) {
   return 0;
 }
 
+
+//
+// simulate a cache access
+//
 void cache_access(Cache *cache, uint32 type, uint32 address, uint32 length) {
+  // 1. compute set & tag
   uint32 set_index = (address >> ilog2(cache->blocksize)) & (cache->set_count - 1);
   uint32 tag = address >> (ilog2(cache->blocksize) + ilog2(cache->set_count));
 
-  printf("\e[33mdebug\e[0m set index: %d, tag: %d\n", set_index, tag);
 
   // TODO
-  // simulate a cache access
-  // 1. compute set & tag
   // 2. check if we have a cache hit
   // 3. on a cache miss, find a victim block and allocate according to the
   //    current policies
